@@ -54,32 +54,35 @@ function setStyle () {
         '}' +
     selectors.threeImages + '{' +
         'display: flex;' +
-        'width: 900px;' +
+        'width: 300px;' +
+        'overflow: hidden;' +
+        'white-space: nowrap;' +
         'height: 300px;' +
         'border-radius: 10px;' +
         '}' +
     selectors.image1 + '{' +
         'width: 300px;' +
         'height: 300px;' +
-        'border-radius: 10px;' +
+        'border-radius: 0 0 10px 10px;' +
         'background-image: url("javascript.png");' +
         '}' +
     selectors.image2 + '{' +
         'width: 300px;' +
         'height: 300px;' +
-        'border-radius: 10px;' +
+        'border-radius: 0 0 10px 10px;' +
         'background-image: url("python.png");' +
         '}' +
     selectors.image3 + '{' +
         'width: 300px;' +
         'height: 300px;' +
-        'border-radius: 10px;' +
+        'border-radius: 0 0 10px 10px;' +
         'background-image: url("go.png");' +
         '}' +
     selectors.threeImages + '{' +
         'width: 900px;' +
         'height: 300px;' +
         'transform: translateX(0px);' +
+        'white-space: nowrap;' +
         '}' +
     selectors.controlPanel + '{' +
         'display: flex;' +
@@ -93,7 +96,7 @@ function setStyle () {
         'display: flex;' +
         'justify-content: center;' +
         'align-items: center;' +
-        'background: #000000;' +
+        'background-color: #808080;' +
         'width: 30px;' +
         'height: 30px;' +
         'border-radius: 50%;' +
@@ -169,10 +172,7 @@ function setHtml () {
 
     $(selectors.containerDiv).html(htmlContent);
 
-    $(selectors.leftButton).css('background-color', '#808080')
-
     var counter = 0;
-
 
     $(selectors.rightButton).click(function() {
         if(counter === 0){
@@ -184,8 +184,8 @@ function setHtml () {
             $(selectors.movingBarInside).css({'transform': 'translateX(132px)', 'transition': '0.6s ease'});
             counter += 1;  
         }
-        counter == 0 ? $(selectors.leftButton).css('background-color', '#808080') : $(selectors.leftButton).css('background-color', '#000000');
-        counter == 2 ? $(selectors.rightButton).css('background-color', '#808080') : $(selectors.rightButton).css('background-color', '#000000');
+        counter === 0 ? $(selectors.leftButton).css('background-color', '#808080') : $(selectors.leftButton).css('background-color', '#000000');
+        counter === 2 ? $(selectors.rightButton).css('background-color', '#808080') : $(selectors.rightButton).css('background-color', '#000000');
       });
 
     $(selectors.leftButton).click(function() {
@@ -198,10 +198,41 @@ function setHtml () {
             $(selectors.movingBarInside).css({'transform': 'translateX(0px)', 'transition': '0.6s ease'});
             counter -= 1;  
         }
-        counter == 0 ? $(selectors.leftButton).css('background-color', '#808080') : $(selectors.leftButton).css('background-color', '#000000');
-        counter == 2 ? $(selectors.rightButton).css('background-color', '#808080') : $(selectors.rightButton).css('background-color', '#000000');
+        counter === 0 ? $(selectors.leftButton).css('background-color', '#808080') : $(selectors.leftButton).css('background-color', '#000000');
+        counter === 2 ? $(selectors.rightButton).css('background-color', '#808080') : $(selectors.rightButton).css('background-color', '#000000');
       });
 
+      $(selectors.threeImages).mousedown(function(event) {
+        formerX = event.pageX;
+      });
+      $(selectors.threeImages).mouseup(function(event2) {
+        newX = event2.pageX;
+
+        if(newX-formerX>0 && counter === 2){
+            $(selectors.threeImages).css({'transform': 'translateX(-300px)', 'transition': '0.6s ease'});
+            $(selectors.movingBarInside).css({'transform': 'translateX(66px)', 'transition': '0.6s ease'});
+            counter -= 1;    
+        }else if(newX-formerX>0 && counter === 1){
+            $(selectors.threeImages).css({'transform': 'translateX(0px)', 'transition': '0.6s ease'});
+            $(selectors.movingBarInside).css({'transform': 'translateX(0px)', 'transition': '0.6s ease'});
+            counter -= 1; 
+        }else if(newX-formerX<0 && counter === 0){
+            $(selectors.threeImages).css({'transform': 'translateX(-300px)', 'transition': '0.6s ease'});
+            $(selectors.movingBarInside).css({'transform': 'translateX(66px)', 'transition': '0.6s ease'});
+            counter += 1;    
+        }else if(newX-formerX<0 && counter === 1){
+            $(selectors.threeImages).css({'transform': 'translateX(-600px)', 'transition': '0.6s ease'});
+            $(selectors.movingBarInside).css({'transform': 'translateX(132px)', 'transition': '0.6s ease'});
+            counter += 1;  
+        }
+
+        counter === 0 ? $(selectors.leftButton).css('background-color', '#808080') : $(selectors.leftButton).css('background-color', '#000000');
+        counter === 2 ? $(selectors.rightButton).css('background-color', '#808080') : $(selectors.rightButton).css('background-color', '#000000');
+
+    });
+
+    var formerX = 0;
+    var newX = 0; 
 
 }
 
